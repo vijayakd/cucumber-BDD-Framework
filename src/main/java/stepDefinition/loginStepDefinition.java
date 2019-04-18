@@ -7,6 +7,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -44,18 +45,37 @@ public class loginStepDefinition {
 		
 	  	}
 
-	@Then("^user enters username and password$")
-	public void user_enters_username_and_password() throws InterruptedException  {
+/*	@Then("^ user enters \"(.*)\" and  \"(.*)\" $")
+	public void user_enters_username_and_password(String username,String password) throws InterruptedException  {
 		System.out.println("3");
 		Thread.sleep(3000);
 
-		WebElement uname=driver.findElement(By.name("username"));
+		WebElement uname=driver.findElement(By.name(username));
 		uname.sendKeys("vijaya1979");
-		WebElement pword=driver.findElement(By.name("password"));
+		WebElement pword=driver.findElement(By.name(password));
 		pword.sendKeys("password");
 		System.out.println("3");
 
-		 }
+		 }*/
+	@Then("^user enters \"([^\"]*)\" and \"([^\"]*)\"$")
+	public void user_enters_and(String username, String password) {
+		System.out.println("3");
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		WebElement uname=driver.findElement(By.name("username"));
+		uname.sendKeys(username);
+		WebElement pword=driver.findElement(By.name("password"));
+		pword.sendKeys(password);
+		System.out.println("3");
+
+		
+	   }
+
 
 	@Then("^user clicks on login button$")
 	public void user_clicks_on_login_button() {
@@ -69,9 +89,39 @@ public class loginStepDefinition {
 		js.executeScript("arguments[0].click();", loginbtn);
 	   }
 
+	@Then("^user is on Home Page$")
+	public void user_is_on_Home_Page()  {
+		String title=driver.getTitle();
+		System.out.println("Title of home page===="+title);
+		Assert.assertEquals("CRMPRO", title);
+	    }
 	
+	@Then("^user moves to new contacts page$")
+	public void user_moves_to_new_contacts_page()  {
+		driver.switchTo().frame("mainpanel");
+		Actions action = new Actions(driver);
+		WebElement contact_tab = driver.findElement(By.xpath("//a[contains(text(),\"Contacts\")]"));
+		WebElement new_contact = driver.findElement(By.xpath("//a[contains(text(),\"New Contact\")]"));
+		
+		action.moveToElement(contact_tab).build().perform();
+		new_contact.click();
+	  
+	}
 
-	
+	@Then("^user enters details for \"([^\"]*)\" and \"([^\"]*)\" and \"([^\"]*)\"$")
+	public void user_enters_details_for_and_and(String firstname, String lastname, String position)   {
+		driver.findElement(By.id("first_name")).sendKeys(firstname);
+		driver.findElement(By.id("surname")).sendKeys(lastname);
+		driver.findElement(By.id("company_position")).sendKeys(position);
+        driver.findElement(By.xpath("//input[@type=\"submit\" and @value=\"Save\"]")).click();
+		
+	 }
+
+
+	@Then("^close Browser$")
+	public void close_Browser()  {
+	driver.quit();  
+	}
 	
 	
 	
