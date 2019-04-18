@@ -1,5 +1,6 @@
 package stepDefinition;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
@@ -9,17 +10,15 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 
+import cucumber.api.DataTable;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import junit.framework.Assert;
 
-@SuppressWarnings("deprecation")
-public class loginStepDefinition {
-
+public class DealsStepDefinition {
 	WebDriver driver;
 	
-/*	
 	@Given("^user is already on login page$")
 	public void user_is_already_on_login_page() {
 		System.setProperty("webdriver.chrome.driver","C:\\Users\\vijay\\Downloads\\chromedriver_win32\\chromedriver.exe");
@@ -45,40 +44,16 @@ public class loginStepDefinition {
 		
 	  	}
 
-*/
-	/*	@Then("^ user enters \"(.*)\" and  \"(.*)\" $")
-	public void user_enters_username_and_password(String username,String password) throws InterruptedException  {
-		System.out.println("3");
-		Thread.sleep(3000);
-
-		WebElement uname=driver.findElement(By.name(username));
-		uname.sendKeys("vijaya1979");
-		WebElement pword=driver.findElement(By.name(password));
-		pword.sendKeys("password");
-		System.out.println("3");
-
-		 }*/
-/*	@Then("^user enters \"([^\"]*)\" and \"([^\"]*)\"$")
-	public void user_enters_and(String username, String password) {
-		System.out.println("3");
-		try {
-			Thread.sleep(3000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+	@Then("^user enters username and password$")
+	public void user_enters_username_and_password(DataTable data)   {
+		List<List<String>> dataval=data.raw();
 		WebElement uname=driver.findElement(By.name("username"));
-		uname.sendKeys(username);
+		uname.sendKeys(dataval.get(0).get(0));
 		WebElement pword=driver.findElement(By.name("password"));
-		pword.sendKeys(password);
-		System.out.println("3");
+		pword.sendKeys(dataval.get(0).get(1));
+	   }
 
-		
-	   }*/
-
-
-/*	@Then("^user clicks on login button$")
+	@Then("^user clicks on login button$")
 	public void user_clicks_on_login_button() {
 		System.out.println("4");
 
@@ -90,41 +65,44 @@ public class loginStepDefinition {
 		js.executeScript("arguments[0].click();", loginbtn);
 	   }
 
-*/
-/*	@Then("^user is on Home Page$")
+	@SuppressWarnings("deprecation")
+	@Then("^user is on Home Page$")
 	public void user_is_on_Home_Page()  {
 		String title=driver.getTitle();
 		System.out.println("Title of home page===="+title);
 		Assert.assertEquals("CRMPRO", title);
 	    }
 	
-	@Then("^user moves to new contacts page$")
-	public void user_moves_to_new_contacts_page()  {
+
+	@Then("^user moves to new deals page$")
+	public void user_moves_to_new_deals_page()   {
 		driver.switchTo().frame("mainpanel");
 		Actions action = new Actions(driver);
-		WebElement contact_tab = driver.findElement(By.xpath("//a[contains(text(),\"Contacts\")]"));
-		WebElement new_contact = driver.findElement(By.xpath("//a[contains(text(),\"New Contact\")]"));
+		WebElement deal_tab = driver.findElement(By.xpath("//a[contains(text(),\"Deals\")]"));
+		WebElement new_deal = driver.findElement(By.xpath("//a[contains(text(),\"New Deal\")]"));
 		
-		action.moveToElement(contact_tab).build().perform();
-		new_contact.click();
+		action.moveToElement(deal_tab).build().perform();
+		new_deal.click();
 	  
-	}
-*/
-	/*@Then("^user enters details for \"([^\"]*)\" and \"([^\"]*)\" and \"([^\"]*)\"$")
-	public void user_enters_details_for_and_and(String firstname, String lastname, String position)   {
-		driver.findElement(By.id("first_name")).sendKeys(firstname);
-		driver.findElement(By.id("surname")).sendKeys(lastname);
-		driver.findElement(By.id("company_position")).sendKeys(position);
-        driver.findElement(By.xpath("//input[@type=\"submit\" and @value=\"Save\"]")).click();
-		
-	 }
+	   }
 
+	@Then("^user enters new deals$")
+	public void user_enters_new_deals(DataTable data)   {
+	List<List<String>> dataval=data.raw();   
+	driver.findElement(By.id("title")).sendKeys(dataval.get(0).get(0));
+	driver.findElement(By.id("amount")).sendKeys(dataval.get(0).get(1));
+	driver.findElement(By.id("probability")).sendKeys(dataval.get(0).get(2));
+	driver.findElement(By.id("commission")).sendKeys(dataval.get(0).get(3));
+
+	
+	}
+	
 
 	@Then("^close Browser$")
 	public void close_Browser()  {
 	driver.quit();  
 	}
 	
-*/	
 	
+
 }
